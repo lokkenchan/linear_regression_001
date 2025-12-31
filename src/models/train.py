@@ -1,15 +1,21 @@
-import os
-import pickle
+if __name__=="__main__":
+    import mlflow
 
-import numpy as np
-import pandas as pd
-import yaml
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import (mean_absolute_error, mean_squared_error, r2,
-                             root_mean_squared_error)
+    # Setting
+    # mlflow.set_tracking_uri("https://dagshub.com/lokkenchan/linear_regression_001.mlflow")
+    # mlflow.set_experiment("my-first-experiment")
 
-from mlflow.models import infer_signature
+    # # Test Connection
+    # print(f"ML Tracking URI: {mlflow.get_tracking_uri()}")
+    # print(f"Active Experiment: {mlflow.get_experiment_by_name('my-first-experiment')}")
+    # # Test Logging
+    # with mlflow.start_run():
+    #     mlflow.log_param("test_param","test_value")
+    #     print("Successfully connected to MLFLOW!")
 
-from sklearn.model_selection train_test_split, GridSearchCV
-from urllib.parse import urlparse # get schema of remote repo url
+    import dagshub
+    dagshub.init(repo_owner='lokkenchan', repo_name='linear_regression_001', mlflow=True)
 
+    with mlflow.start_run():
+        mlflow.log_param('parameter name', 'value')
+        mlflow.log_metric('metric name', 1)

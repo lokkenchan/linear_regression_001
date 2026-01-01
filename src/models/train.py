@@ -1,4 +1,19 @@
+from logging_utils import setup_logging
+import logging
+
+setup_logging()
+logger = logging.getLogger(__name__)
+
+def train():
+    logger.info("Training started")
+    logger.debug("Loading dataset")
+    logger.warning("Class imbalance detected")
+    logger.info("Training completed")
+
+
 if __name__=="__main__":
+    train()
+
     import mlflow
 
     # Setting

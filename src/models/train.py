@@ -1,10 +1,14 @@
-from logging_utils import setup_logging
+"""Module providing a logging function"""
 import logging
+from ..utils.logging_utils import setup_logging
 
 setup_logging()
 logger = logging.getLogger(__name__)
 
 def train():
+    """
+    Docstring for train
+    """
     logger.info("Training started")
     logger.debug("Loading dataset")
     logger.warning("Class imbalance detected")

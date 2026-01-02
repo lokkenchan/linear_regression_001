@@ -1,0 +1,74 @@
+dataset:
+  name: insurance
+  version: 0.1
+  source: https://www.kaggle.com/datasets/mirichoi0218/insurance
+  target: charges
+  problem_type: regression
+
+validation:
+  allow_extra_columns: false
+  max_missing_percent: 0.0
+  check_duplicates: true
+
+# The data should be as your model sees it
+# cleaned, processed, model-ready, not raw inputs
+features:
+  numerical:
+    age:
+      required: true
+      nullable: false
+      dtype: int
+      min: 0
+      max: 120
+      drift_threshold: 0.1
+    bmi:
+      required: true
+      nullable: false
+      dtype: float
+      min: 0
+      drift_threshold: 0.2
+    children:
+      required: true
+      nullable: false
+      dtype: int
+      min: 0
+      drift_threshold: 0.1
+
+  categorical:
+    sex:
+      required: true
+      nullable: false
+      dtype: str
+      allowed:
+        -male
+        -female
+      max_cardinality: 3
+    smoker:
+      required: true
+      nullable: false
+      dtype: str
+      allowed:
+        -yes
+        -no
+      max_cardinality: 2
+    region:
+      required: true
+      nullable: false
+      dtype: str
+      allowed:
+        -northwest
+        -northeast
+        -southwest
+        -southeast
+      max_cardinality: 4
+
+target:
+  charges:
+    dtype: float
+    min: 0
+
+# from clean training data. This provides the reference for drift_threshold
+statistics:
+
+
+

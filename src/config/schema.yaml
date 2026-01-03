@@ -6,7 +6,7 @@ dataset:
   problem_type: regression
 
 validation:
-  allow_extra_columns: false
+  allow_extra_columns: False
   max_missing_percent: 0.0
   check_duplicates: true
 

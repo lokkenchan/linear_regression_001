@@ -1,1 +1,1 @@
-from .DataLoader import load_raw_data
+from .DataLoader import normalize_column_names, load_raw_data

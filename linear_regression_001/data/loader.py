@@ -1,6 +1,17 @@
 from linear_regression_001.utils.paths import RAW, INTERIM
 import pandas as pd
 
+# Defined schema to enforce
+SCHEMA = {
+    "age":"int64",
+    "sex":"string",
+    "bmi":"float64",
+    "children":"int64",
+    "smoker":"string",
+    "region":"string",
+    "charges":"float64"
+}
+
 def normalize_column_names(df):
     """
     Makes column names lowercase, replacing non-word characters with _, and removing leading or trailing whitespace or _.
@@ -20,18 +31,42 @@ def normalize_column_names(df):
             .str.strip("_") # removes any _ from the leading and trailing ends
 
     )
-    print('normalized')
+    print('*normalized*')
     return df
+
 
 
 
 def load_raw_data(file: str) -> pd.DataFrame:
+    """
+    Load data from /data/raw given the file name
+    :param file: the file name
+    :type file: str
+    :return: Returns the DataFrame with the file name from /data/raw
+    :rtype: DataFrame
+    """
     df = pd.read_csv(RAW / file)
     df = normalize_column_names(df)
+
+    missing = set(SCHEMA) - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing Columns: {missing}")
+    print('*missing checked*')
+
+    # Enforce dtypes
+    df = df.astype(SCHEMA)
+    print('*schema enforced*')
 
     return df
 
 def load_clean_data(file: str) -> pd.DataFrame:
+    """
+    Load data from /data/interim given the file name
+    :param file: the file name
+    :type file: str
+    :return: Returns the DataFrame with the file name from /data/interim
+    :rtype: DataFrame
+    """
     df = pd.read_csv(INTERIM / file)
 
     return df

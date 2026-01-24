@@ -1,4 +1,4 @@
-from linear_regression_001.utils.paths import RAW
+from linear_regression_001.utils.paths import RAW, INTERIM
 import pandas as pd
 
 def normalize_column_names(df):
@@ -28,5 +28,10 @@ def normalize_column_names(df):
 def load_raw_data(file: str) -> pd.DataFrame:
     df = pd.read_csv(RAW / file)
     df = normalize_column_names(df)
+
+    return df
+
+def load_clean_data(file: str) -> pd.DataFrame:
+    df = pd.read_csv(INTERIM / file)
 
     return df

@@ -1,1 +1,1 @@
-from .build_features import split_features_target
+from .build_features import split_features_target, build_features

@@ -16,10 +16,28 @@ def feat_log_bmi(df):
 def feat_log_charges(df):
     return np.log1p(df["charges"])
 
+    # raw features
+def feat_age(df):
+    return df["age"]
+
+def feat_bmi(df):
+    return df["bmi"]
+
+def feat_children(df):
+    return df["children"]
+
+
+
 
 # --- Feature registry (menu of available features) ---
 
 FEATURE_REGISTRY = {
+    # Raw
+    "age": feat_age,
+    "bmi": feat_bmi,
+    "children": feat_children,
+
+    # Engineered
     "log_charges": feat_log_charges,
     "log_bmi": feat_log_bmi
 

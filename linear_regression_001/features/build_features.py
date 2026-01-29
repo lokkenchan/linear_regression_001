@@ -15,9 +15,6 @@ def feat_bmi_smoker(df):
     df["bmi_smoker"] = df["bmi"]*(df["smoker"]=="yes").astype(int)
     return df["bmi_smoker"]
 
-def feat_smoker_binary(df):
-    df["smoker_binary"]=df["smoker"].apply(lambda x: 1 if x=="yes" else 0)
-    return df["smoker_binary"]
 
 # Raw features
 def feat_age(df):

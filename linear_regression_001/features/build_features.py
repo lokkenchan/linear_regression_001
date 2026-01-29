@@ -16,6 +16,9 @@ def feat_log_bmi(df):
 def feat_log_charges(df):
     return np.log1p(df["charges"])
 
+def feat_age_sq(df):
+    return df["age"]**2
+
     # raw features
 def feat_age(df):
     return df["age"]
@@ -39,7 +42,8 @@ FEATURE_REGISTRY = {
 
     # Engineered
     "log_charges": feat_log_charges,
-    "log_bmi": feat_log_bmi
+    "log_bmi": feat_log_bmi,
+    "age_sq": feat_age_sq
 
 }
 

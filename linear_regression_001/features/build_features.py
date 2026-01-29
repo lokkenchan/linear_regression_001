@@ -9,7 +9,7 @@ def split_features_target(df):
 
 
 # --- Individual feature definitions ---
-    # Deterministic transformations only
+# Deterministic transformations only
 def feat_log_bmi(df):
     return np.log1p(df["bmi"])
 
@@ -28,7 +28,15 @@ def feat_smoker_binary(df):
     df["smoker_binary"]=df["smoker"].apply(lambda x: 1 if x=="yes" else 0)
     return df["smoker_binary"]
 
-    # raw features
+def feat_east(df):
+    df["east"] = ((df["region"]=="northeast") | (df["region"]=="southeast")).astype(int)
+    return df["east"]
+
+def feat_region_southeast(df):
+    df["southeast"] = (df["region"]=="southeast").astype(int)
+    return df["southeast"]
+
+# Raw features
 def feat_age(df):
     return df["age"]
 
@@ -38,22 +46,36 @@ def feat_bmi(df):
 def feat_children(df):
     return df["children"]
 
+def feat_region(df):
+    return df["region"]
+
+def feat_smoker(df):
+    return df["smoker"]
+
+def feat_sex(df):
+    return df["sex"]
 
 
 
 # --- Feature registry (menu of available features) ---
 
 FEATURE_REGISTRY = {
-    # Raw
+# Raw
     "age": feat_age,
     "bmi": feat_bmi,
     "children": feat_children,
+    "region": feat_region,
+    "smoker": feat_smoker,
+    "sex": feat_sex,
 
-    # Engineered
+# Engineered
     "log_charges": feat_log_charges,
     "log_bmi": feat_log_bmi,
     "age_sq": feat_age_sq,
-    "bmi_smoker":feat_bmi_smoker
+    "bmi_smoker":feat_bmi_smoker,
+    "smoker_binary":feat_smoker_binary,
+    "east": feat_east,
+    "southeast": feat_region_southeast
 
 }
 

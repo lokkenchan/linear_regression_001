@@ -19,6 +19,15 @@ def feat_log_charges(df):
 def feat_age_sq(df):
     return df["age"]**2
 
+def feat_bmi_smoker(df):
+    df["smoker_binary"]=df["smoker"].apply(lambda x: 1 if x=="yes" else 0)
+    df["bmi_smoker"] = df["bmi"]*df["smoker_binary"]
+    return df["bmi_smoker"]
+
+def feat_smoker_binary(df):
+    df["smoker_binary"]=df["smoker"].apply(lambda x: 1 if x=="yes" else 0)
+    return df["smoker_binary"]
+
     # raw features
 def feat_age(df):
     return df["age"]
@@ -43,7 +52,8 @@ FEATURE_REGISTRY = {
     # Engineered
     "log_charges": feat_log_charges,
     "log_bmi": feat_log_bmi,
-    "age_sq": feat_age_sq
+    "age_sq": feat_age_sq,
+    "bmi_smoker":feat_bmi_smoker
 
 }
 

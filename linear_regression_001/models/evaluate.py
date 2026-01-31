@@ -9,7 +9,7 @@ from linear_regression_001.data.loader import load_processed_data
 from linear_regression_001.features.build_features import split_features_target
 from linear_regression_001.utils.paths import MODELS
 
-MODEL_PATH = MODELS + "linear_regression.pkl"
+MODEL_PATH = MODELS / "linear_regression.pkl"
 
 def evaluate(y_true, y_pred, name = "Model"):
     mae = mean_absolute_error(y_true, y_pred)
@@ -31,8 +31,8 @@ def evaluate_model():
     model = joblib.load(MODEL_PATH)
     preds = model.predict(X_test)
 
-    metrics = evaluate(y_test,preds)
-    print(metrics)
+    evaluate(y_test,preds)
+
 
 
 if __name__ == "__main__":

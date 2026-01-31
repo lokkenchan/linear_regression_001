@@ -4,7 +4,7 @@ import pandas as pd
 # linear_regression_001
 from linear_regression_001.utils.paths import MODELS, INFERENCE
 
-MODEL_PATH = MODELS + "linear_regression.pkl"
+MODEL_PATH = MODELS / "linear_regression.pkl"
 
 
 def predict(X_data_path):

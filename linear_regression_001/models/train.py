@@ -21,8 +21,8 @@ def train_models():
     model = LinearRegression()
     model.fit(X_train,y_train)
 
-    joblib.dump(model, MODELS + "linear_regression.pkl")
-    joblib.dump(baseline, MODELS + "baseline.pkl")
+    joblib.dump(model, MODELS / "linear_regression.pkl")
+    joblib.dump(baseline, MODELS / "baseline.pkl")
 
     print("Training complete. Models saved.")
 

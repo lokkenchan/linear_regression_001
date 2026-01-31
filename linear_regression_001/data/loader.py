@@ -1,4 +1,4 @@
-from linear_regression_001.utils.paths import RAW, INTERIM, PROCESSED
+from linear_regression_001.utils.paths import RAW, INTERIM, PROCESSED, FEATURES
 import pandas as pd
 
 # Defined schema to enforce
@@ -71,6 +71,18 @@ def load_clean_data(file: str) -> pd.DataFrame:
 
     return df
 
+def load_features_data(file: str) -> pd.DataFrame:
+    """
+    Docstring for load_features_data
+
+    :param file: Description
+    :type file: str
+    :return: Description
+    :rtype: DataFrame
+    """
+    df = pd.read_csv(FEATURES / file)
+    return df
+
 def load_processed_data(file: str) -> pd.DataFrame:
     """
     Docstring for load_processed_data
@@ -81,3 +93,4 @@ def load_processed_data(file: str) -> pd.DataFrame:
     :rtype: DataFrame
     """
     df = pd.read_csv(PROCESSED / file)
+    return df

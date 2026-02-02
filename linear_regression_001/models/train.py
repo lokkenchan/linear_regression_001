@@ -11,11 +11,13 @@ from sklearn.metrics import mean_squared_error
 # linear_regression_001
 from linear_regression_001.utils import MODELS
 from linear_regression_001.data import load_raw_data
-from linear_regression_001.features import split_features_target
+from linear_regression_001.features import split_features_target,build_features,build_preprocessor
 
 def train_models():
     # load raw data
     df = load_raw_data("insurance.csv")
+
+
     # preprocess the raw data
     X, y = split_features_target(df)
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)

@@ -1,5 +1,15 @@
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+
+"""
+This is used to define feature creation, encoding, scaling, and column selection.
+There are TWO types of features:
+1) Feature engineering such as ratios, bins, flags defined in build_features.py
+2) Feature transform such as scaling or encoding defined in build_features.py via preprocessor
+Both 1) and 2) are not saved as data.
+"""
 
 TARGET = "charges"
 def split_features_target(df):
@@ -52,12 +62,14 @@ FEATURE_REGISTRY = {
     "bmi_smoker":feat_bmi_smoker
 }
 
+# FEATURE_LIST - Final feature_list
+FEATURE_LIST = ["age","bmi","children","region","smoker","sex","bmi_smoker"]
 
 # --- Main builder ---
 
 def build_features(df: pd.DataFrame, feature_list: list) -> pd.DataFrame:
     """
-    Build features, but allow A/B test.
+    Build features from DataFrame returning only the features.
     We can keep the same data, model, and CV split, but have new feature(s) as difference.
 
 
@@ -75,3 +87,19 @@ def build_features(df: pd.DataFrame, feature_list: list) -> pd.DataFrame:
         out[feat_name] = FEATURE_REGISTRY[feat_name](df)
 
     return out
+
+def build_preprocessor():
+    """
+    Create encoder for numeric_cols and categorical_cols for later use.
+    Remainder is specified as passthrough to not automatically drop a column.
+    For train it would be used as preprocessor.fit_transform(X_train).
+    For predict it would be used as preprocessor.transform(X_new).
+    """
+    numeric_cols = ["age","bmi","children","bmi_smoker"]
+    categorical_cols = ["region","smoker","sex"]
+    preprocessor = ColumnTransformer([
+        ("num",StandardScaler(),numeric_cols),
+        ("cat",OneHotEncoder(handle_unknown="ignore",drop="first",sparse_output=False),categorical_cols)
+    ], remainder="passthrough")
+
+    return preprocessor

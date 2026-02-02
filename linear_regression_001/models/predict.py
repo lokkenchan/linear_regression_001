@@ -13,7 +13,7 @@ def predict(X_data_path):
     :param X_data_path: The name of the X data within the inference folder
     """
     model = joblib.load(MODEL_PATH)
-    X_new = pd.read_csv(X_data_path)
+    X_new = pd.read_csv(INFERENCE / X_data_path)
     preds = model.predict(X_new)
     return preds
 

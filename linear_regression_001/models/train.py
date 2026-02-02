@@ -1,39 +1,36 @@
+# 3rd Party
 import joblib
-import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.dummy import DummyRegressor
-from sklearn.metrics import mean_squared_error
 
 # linear_regression_001
 from linear_regression_001.utils import MODELS
 from linear_regression_001.data import load_raw_data
-from linear_regression_001.features import split_features_target,build_features,build_preprocessor
+# Note: build_preprocessor defines transforms with ColumnTransformer, Scaler, and Encoder.
+from linear_regression_001.features import split_features_target,build_features,build_preprocessor, FEATURE_LIST
 
 def train_models():
-    # load raw data
+    """
+    Inputs raw data with cleaning, followed by feature_building, and preprocessing (encoding/scaling)
+    and finally fits
+    """
+    # Load raw data
     df = load_raw_data("insurance.csv")
-
-
-    # preprocess the raw data
+    # Separate X and y
     X, y = split_features_target(df)
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Build out features from feature engineering
+    X_features_built = build_features(X, FEATURE_LIST)
+    df = pd.concat([X_features_built,y],axis=1)
+    # Setup preprocessor from build_features.py
+    preprocessor = build_preprocessor()
 
-    # Dectect column types
-    categorical_cols = X_train.select_dtypes(exclude="number").columns
-    numeric_cols = X_train.select_dtypes(include="number").columns
+    # Train test split
+    X_train, X_test, y_train, y_test = train_test_split(X_features_built, y, test_size=0.2, random_state=42)
 
-    # Preprocessing
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_cols),
-            ("num", "passthrough", numeric_cols),
-        ]
-    )
-
+    # Setup pipeline
     model = Pipeline(steps=[
         ("preprocessing", preprocessor),
         ("regressor", LinearRegression())
@@ -45,10 +42,6 @@ def train_models():
     # Train baseline dummy model
     baseline = DummyRegressor(strategy = "mean")
     baseline.fit(X_train,y_train)
-
-    # Consider giving a validation score
-    val_preds= model.predict(X_val)
-    print("Val RMSE: ", np.sqrt(mean_squared_error(y_val,val_preds)))
 
     # Save
     joblib.dump(model, MODELS / "linear_regression.pkl")

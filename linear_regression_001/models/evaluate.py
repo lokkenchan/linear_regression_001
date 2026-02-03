@@ -13,35 +13,53 @@ from sklearn.metrics import (
 )
 
 # linear_regression_001
-from linear_regression_001.data.loader import load_processed_data
+from linear_regression_001.data.loader import load_raw_data, load_clean_data, load_processed_data
 from linear_regression_001.features.build_features import split_features_target, build_features, FEATURE_LIST
-from linear_regression_001.utils.paths import MODELS
+from linear_regression_001.utils.paths import INTERIM, MODELS, PREDICTIONS
 
 MODEL_PATH = MODELS / "linear_regression.pkl"
 
-def evaluate(y_true, y_pred, name = "Model"):
-    mae = mean_absolute_error(y_true, y_pred)
-    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+def evaluate_model(model_path, test_data_path, baseline_path=None):
+    model = joblib.load(model_path)
+    df_test = load_clean_data(test_data_path)
+    X_test, y_test = split_features_target(df_test)
+    X_test_features = build_features(X_test, FEATURE_LIST)
+
+    # Generate predictions
+    y_pred = model.predict(X_test_features)
+
+    # Initialize results dictionary
+    results = {}
+
+    # Calculate Comprehensive Metrics
+    results['metrics'] = calculate_metrics(y_test,y_pred)
+
+    return results
+
+def calculate_metrics(y_true, y_pred):
+    """Calculate comprehensive regression metrics."""
+    return {
+        'rmse': np.sqrt(mean_squared_error(y_true, y_pred)),
+        'mae': mean_absolute_error(y_true, y_pred),
+        'r2': r2_score(y_true, y_pred),
+        'mape': mean_absolute_percentage_error(y_true,y_pred) * 100,
+        'adjusted_r2': calculate_adjusted_r2(y_true, y_pred, n_features = len(FEATURE_LIST))
+    }
+
+def calculate_adjusted_r2(y_true, y_pred, n_features):
+    """Calculate adjusted R2 for model comparison.
+        n is the total sample size,
+        n_features is the number of independent features,
+        r2 is sample r2
+    """
+    n = len(y_true)
     r2 = r2_score(y_true, y_pred)
-
-    print(f"{name} Performance")
-    print("-" * 25)
-    print(f"MAE: {mae:.4f}")
-    print(f"RMSE: {rmse:.4f}")
-    print(f"R^2: {r2:.4f}")
-
-
-def evaluate_model():
-    df = load_processed_data("processed_insurance.csv")
-    X, y = split_features_target(df)
-    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2,random_state=42)
-
-    model = joblib.load(MODEL_PATH)
-    preds = model.predict(X_test)
-
-    evaluate(y_test,preds)
-
+    return 1 - ( ((1 - r2) * (n - 1)) / (n - n_features - 1))
 
 
 if __name__ == "__main__":
-    evaluate_model()
+    evaluate_model(
+        model_path = MODELS / "linear_regression.pkl",
+        test_data_path = INTERIM / "test.csv",
+        baseline_path = MODELS / "baseline.pkl"
+    )

@@ -2,4 +2,4 @@ from linear_regression_001.data.loader import normalize_column_names,load_raw_da
 from linear_regression_001.data.preprocess import missing_summary, drop_high_missing_rows, preprocess
 from linear_regression_001.utils.paths import PROJECT_ROOT,DATA_DIR,RAW,INTERIM,EXTERNAL,PROCESSED,INFERENCE,PREDICTIONS,MODELS
 from linear_regression_001.features.build_features import split_features_target,build_features,build_preprocessor,FEATURE_LIST
-from linear_regression_001.models import train_models,predict_features,evaluate,evaluate_model
+from linear_regression_001.models import train_models,predict_features,evaluate_model

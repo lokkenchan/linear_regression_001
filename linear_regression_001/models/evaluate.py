@@ -17,9 +17,8 @@ from linear_regression_001.data.loader import load_raw_data, load_clean_data, lo
 from linear_regression_001.features.build_features import split_features_target, build_features, FEATURE_LIST
 from linear_regression_001.utils.paths import INTERIM, MODELS, PREDICTIONS
 
-MODEL_PATH = MODELS / "linear_regression.pkl"
-
 def evaluate_model(model_path, test_data_path, baseline_path=None):
+    # Load model and test data to build features
     model = joblib.load(model_path)
     df_test = load_clean_data(test_data_path)
     X_test, y_test = split_features_target(df_test)
@@ -33,6 +32,12 @@ def evaluate_model(model_path, test_data_path, baseline_path=None):
 
     # Calculate Comprehensive Metrics
     results['metrics'] = calculate_metrics(y_test,y_pred)
+
+    # Baseline
+    if baseline_path:
+        results['baseline_comparison'] = compare_to_baseline(
+            baseline_path, X_test_features, y_test, y_pred
+            )
 
     return results
 
@@ -54,7 +59,23 @@ def calculate_adjusted_r2(y_true, y_pred, n_features):
     """
     n = len(y_true)
     r2 = r2_score(y_true, y_pred)
-    return 1 - ( ((1 - r2) * (n - 1)) / (n - n_features - 1))
+    return 1 - ( ((1 - r2) * (n - 1)) / (n - n_features - 1) )
+
+def compare_to_baseline(baseline_path,X_test,y_test,y_pred):
+    baseline = joblib.load(baseline_path)
+    baseline_pred = baseline.predict(X_test)
+
+    model_rmse = np.sqrt(mean_squared_error(y_test,y_pred))
+    baseline_rmse = np.sqrt(mean_squared_error(y_test,baseline_pred))
+
+    improvement = ((model_rmse - baseline_rmse)/ baseline_rmse) * 100
+
+    return {
+        'baseline_rmse': baseline_rmse,
+        'model_rmse': model_rmse,
+        'improvement_percent': improvement,
+        'beats_baseline': model_rmse < baseline_rmse
+    }
 
 
 if __name__ == "__main__":

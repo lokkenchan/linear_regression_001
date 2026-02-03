@@ -9,7 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 # Data directory
 DATA_DIR = PROJECT_ROOT / "data"
-# Uneditted data
+# Original, uneditted data
 RAW = DATA_DIR / "raw"
 # External supplementary data to be combined with raw data
 EXTERNAL = DATA_DIR / "external"

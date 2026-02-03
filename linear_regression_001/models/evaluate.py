@@ -1,12 +1,20 @@
 # 3rd Party
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import joblib
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import (
+    mean_absolute_error,
+    mean_squared_error,
+    r2_score,
+    mean_absolute_percentage_error
+)
 
 # linear_regression_001
 from linear_regression_001.data.loader import load_processed_data
-from linear_regression_001.features.build_features import split_features_target
+from linear_regression_001.features.build_features import split_features_target, build_features, FEATURE_LIST
 from linear_regression_001.utils.paths import MODELS
 
 MODEL_PATH = MODELS / "linear_regression.pkl"

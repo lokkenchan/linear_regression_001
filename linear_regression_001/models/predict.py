@@ -9,17 +9,19 @@ from linear_regression_001.features.build_features import build_features, FEATUR
 MODEL_PATH = MODELS / "linear_regression.pkl"
 
 
-def predict_features(X_data_file):
+def predict_features(model_path,X_data_file,name):
     """
-    Give the features to be predicted from
-    :param X_data_file: The name of the X data within the inference folder with only raw features
+    Give the model, the features to predict from INFERENCE, and model name.
+    :param model_path: The path of the model we want to use.
+    :param X_data_file: The name of the X data within the inference folder with only raw features.
+    :param name: The name of the model to provide description when predictions are saved.
 
     Returns:
-        1) predictions as pred to be used when imported,
-        2) predictions as a dataframe called predictions.csv in the PREDICTIONS data directory,
+        1) predictions as preds to be used when imported,
+        2) predictions as a dataframe called predictions_{name}.csv in the PREDICTIONS data directory,
         3) prints out a confirmation of completion.
     """
-    model = joblib.load(MODEL_PATH)
+    model = joblib.load(model_path)
     # The X_data_file should not have any features from feature engineering
     X_new = pd.read_csv(INFERENCE / X_data_file)
     # Add the built features with the defined FEATURE_LIST
@@ -29,16 +31,16 @@ def predict_features(X_data_file):
 
     # Save a copy into predictions
     results = pd.DataFrame({'predictions':preds})
-    results.to_csv(PREDICTIONS / "predictions.csv", index=False)
+    results.to_csv(PREDICTIONS / f"predictions_{name}.csv", index=False)
 
-    print("Inference completed. Predictions saved.")
+    print(f"Inference completed. Predictions from {name} saved.")
 
     return preds
 
 if __name__ == "__main__":
     # predict_features automatically looks within INFERENCE
     # Run by python3 -m linear_regression_001.models.predict from root dir
-    predictions = predict_features("predict_data.csv")
+    predictions = predict_features(MODEL_PATH,"predict_data.csv","linear_regression")
     print(predictions[:5])
 
 

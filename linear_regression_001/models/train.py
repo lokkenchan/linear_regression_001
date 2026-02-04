@@ -40,7 +40,10 @@ def train_models():
     model.fit(X_train, y_train)
 
     # Train baseline dummy model
-    baseline = DummyRegressor(strategy = "mean")
+    baseline = Pipeline([
+        ("preprocessing",preprocessor),
+        ("model", DummyRegressor(strategy="mean"))
+    ])
     baseline.fit(X_train,y_train)
 
     # Save

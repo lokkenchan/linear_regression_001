@@ -39,6 +39,9 @@ def evaluate_model(model_path, test_data_path, baseline_path=None):
             baseline_path, X_test_features, y_test, y_pred
             )
 
+    # Residual analysis
+    results['residual_analysis'] = analyze_residuals(y_test,y_pred)
+
     return results
 
 def calculate_metrics(y_true, y_pred):
@@ -76,6 +79,22 @@ def compare_to_baseline(baseline_path,X_test,y_test,y_pred):
         'improvement_percent': improvement,
         'beats_baseline': model_rmse < baseline_rmse
     }
+
+def analyze_residuals(y_true, y_pred):
+    """Analyze residuals for model diagnostics"""
+
+    residuals = y_true - y_pred
+
+    return {
+        'mean_residual': np.mean(residuals),
+        'std_residual': np.std(residuals),
+        'residual_skewness': pd.Series(residuals).skew(),
+        'residual_kurtosis': pd.Series(residuals).kurtosis(),
+        'max_overestimation': np.min(residuals),
+        'max_underestimation': np.max(residuals),
+        'residuals_within_1std': np.mean(np.abs(residuals)<np.std(residuals))*100
+    }
+
 
 
 if __name__ == "__main__":

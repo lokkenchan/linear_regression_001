@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
+import math
 # statsmodels
 import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor, OLSInfluence
@@ -102,9 +103,18 @@ def plot_linearity_checks(df, features, target, figsize=(15,10)):
     """
     n_features = len(features)
     n_cols = 3
-    n_rows = (n_features + n_cols -1)
+    # Ceiling allows to round up for an extra row for stray features
+    n_rows = math.ceil(n_features/n_cols)
 
     fig, axes = plt.subplots(n_rows, n_cols, figsize=figsize)
+    """axes is a varying type
+    it can be 1x1 as a single obj, 1D array, or 2D array.
+    Later, axes[idx] is used, if axes as a single obj
+    cannot be indexed, so to be consistent w/ the 1D or 2D forms
+    it is wrapped as a list.
+    ravel() allows a 2D to be flatten into a 1D, so it is consistently 1D
+    with iteration.
+    """
     axes = axes.ravel() if n_features > 1 else [axes]
 
     for idx, feature in enumerate(features):

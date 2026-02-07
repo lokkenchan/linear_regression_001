@@ -64,8 +64,26 @@ def calculate_vif(df, features=None):
     ]
     return vif_data.sort_values(by='VIF', ascending=False)
 
-def plot_feature_correlations():
-    pass
+def plot_feature_correlations(df, features, figsize=(15,10)):
+    """
+    Plot of annotated and colored correlation matrix
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        DataFrame with features
+    features: list
+        List of feature column names
+    figsize: tuple
+        Figure size
+    """
+    corr_matrix = df[features].corr(numeric_only=True)
+    plt.figure(figsize=figsize)
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1,
+                fmt='.2f')
+    plt.title('Feature Correlation Matrix')
+    plt.tight_layout()
+    plt.show()
 
 def plot_linearity_checks():
     pass

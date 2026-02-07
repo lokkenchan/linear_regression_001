@@ -85,5 +85,39 @@ def plot_feature_correlations(df, features, figsize=(15,10)):
     plt.tight_layout()
     plt.show()
 
-def plot_linearity_checks():
-    pass
+def plot_linearity_checks(df, features, target, figsize=(15,10)):
+    """
+    Plot scatter plots to check linearity assumption
+
+    Parameters
+    ----------
+    df pd.DataFrame
+        Dataframe with features and target
+    features list
+        List of the column names
+    target: str
+        Target column name
+    figsize: tuple
+        Figure size
+    """
+    n_features = len(features)
+    n_cols = 3
+    n_rows = (n_features + n_cols -1)
+
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=figsize)
+    axes = axes.ravel() if n_features > 1 else [axes]
+
+    for idx, feature in enumerate(features):
+        axes[idx].scatter(df[feature], df[target], alpha=0.5)
+        axes[idx].set_xlabel(feature)
+        axes[idx].set_ylabel(target)
+        axes[idx].set_title(f'{feature} vs {target}')
+        axes[idx].grid(True, alpha=0.3)
+
+    # Hide unused subplots
+    for idx in range(n_features, len(axes)):
+        axes[idx].axis('off')
+
+    plt.tight_layout()
+    plt.show()
+

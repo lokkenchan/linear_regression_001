@@ -65,7 +65,7 @@ def calculate_vif(df, features=None):
     ]
     return vif_data.sort_values(by='VIF', ascending=False)
 
-def plot_feature_correlations(df, features, figsize=(15,10)):
+def plot_feature_correlations(df, features, figsize=(10,5)):
     """
     Plot of annotated and colored correlation matrix
 

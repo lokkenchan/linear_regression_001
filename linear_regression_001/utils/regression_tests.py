@@ -10,7 +10,20 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor, OLSI
 from statsmodels.stats.diagnostic import het_breuschpagan
 from statsmodels.stats.stattools import durbin_watson
 from statsmodels.regression.linear_model import OLS
+"""
+L.I.N.N.E. Acronym:
+===================
+Linearity (linear relationship exists between target and features),
 
+Independence of Errors (residuals not correlated),
+
+Normality of Errors (residuals are approx normal),
+No perfect multicollinearity (VIF and correlation matrix),
+
+Equal Variance of Errors (spread of residuals is consistent across predictions),
+
+Outliers and Influence
+"""
 def calculate_vif(df, features=None):
     """
     Calculate Variance Inflation Factor for features.

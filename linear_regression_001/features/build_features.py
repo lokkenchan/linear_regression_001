@@ -25,6 +25,9 @@ def feat_bmi_smoker(df):
     df["bmi_smoker"] = df["bmi"]*(df["smoker"]=="yes").astype(int)
     return df["bmi_smoker"]
 
+def feat_age_sq(df):
+    return df["age"]**2
+
 
 # Raw features
 def feat_age(df):
@@ -59,7 +62,8 @@ FEATURE_REGISTRY = {
     "sex": feat_sex,
 
     # Engineered
-    "bmi_smoker":feat_bmi_smoker
+    "bmi_smoker":feat_bmi_smoker,
+    "age_sq":feat_age_sq
 }
 
 # FEATURE_LIST - Final feature_list

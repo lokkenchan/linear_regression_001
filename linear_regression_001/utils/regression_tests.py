@@ -13,17 +13,63 @@ from statsmodels.regression.linear_model import OLS
 """
 L.I.N.N.E. Acronym:
 ===================
-Linearity (linear relationship exists between target and features),
+- Linearity (linear relationship exists between target and features),
 
-Independence of Errors (residuals not correlated),
+- Independence of Errors (residuals not correlated),
 
-Normality of Errors (residuals are approx normal),
-No perfect multicollinearity (VIF and correlation matrix),
+- Normality of Errors (residuals are approx normal),
+- No perfect multicollinearity (VIF and correlation matrix),
 
-Equal Variance of Errors (spread of residuals is consistent across predictions),
+- Equal Variance of Errors (spread of residuals is consistent across predictions),
 
-Outliers and Influence
+- Outliers and Influence
 """
+
+def plot_linearity_checks(df, features, target, figsize=(15,10)):
+    """
+    Plot scatter plots to check linearity assumption
+
+    Parameters
+    ----------
+    df pd.DataFrame
+        Dataframe with features and target
+    features list
+        List of the column names
+    target: str
+        Target column name
+    figsize: tuple
+        Figure size
+    """
+    n_features = len(features)
+    n_cols = 3
+    # Ceiling allows to round up for an extra row for stray features
+    n_rows = math.ceil(n_features/n_cols)
+
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=figsize)
+    """axes is a varying type
+    it can be 1x1 as a single obj, 1D array, or 2D array.
+    Later, axes[idx] is used, if axes as a single obj
+    cannot be indexed, so to be consistent w/ the 1D or 2D forms
+    it is wrapped as a list.
+    ravel() allows a 2D to be flatten into a 1D, so it is consistently 1D
+    with iteration.
+    """
+    axes = axes.ravel() if n_features > 1 else [axes]
+
+    for idx, feature in enumerate(features):
+        axes[idx].scatter(df[feature], df[target], alpha=0.5)
+        axes[idx].set_xlabel(feature)
+        axes[idx].set_ylabel(target)
+        axes[idx].set_title(f'{feature} vs {target}')
+        axes[idx].grid(True, alpha=0.3)
+
+    # Hide unused subplots
+    for idx in range(n_features, len(axes)):
+        axes[idx].axis('off')
+
+    plt.tight_layout()
+    plt.show()
+
 def calculate_vif(df, features=None):
     """
     Calculate Variance Inflation Factor for features.
@@ -99,48 +145,5 @@ def plot_feature_correlations(df, features, figsize=(10,5)):
     plt.tight_layout()
     plt.show()
 
-def plot_linearity_checks(df, features, target, figsize=(15,10)):
-    """
-    Plot scatter plots to check linearity assumption
 
-    Parameters
-    ----------
-    df pd.DataFrame
-        Dataframe with features and target
-    features list
-        List of the column names
-    target: str
-        Target column name
-    figsize: tuple
-        Figure size
-    """
-    n_features = len(features)
-    n_cols = 3
-    # Ceiling allows to round up for an extra row for stray features
-    n_rows = math.ceil(n_features/n_cols)
-
-    fig, axes = plt.subplots(n_rows, n_cols, figsize=figsize)
-    """axes is a varying type
-    it can be 1x1 as a single obj, 1D array, or 2D array.
-    Later, axes[idx] is used, if axes as a single obj
-    cannot be indexed, so to be consistent w/ the 1D or 2D forms
-    it is wrapped as a list.
-    ravel() allows a 2D to be flatten into a 1D, so it is consistently 1D
-    with iteration.
-    """
-    axes = axes.ravel() if n_features > 1 else [axes]
-
-    for idx, feature in enumerate(features):
-        axes[idx].scatter(df[feature], df[target], alpha=0.5)
-        axes[idx].set_xlabel(feature)
-        axes[idx].set_ylabel(target)
-        axes[idx].set_title(f'{feature} vs {target}')
-        axes[idx].grid(True, alpha=0.3)
-
-    # Hide unused subplots
-    for idx in range(n_features, len(axes)):
-        axes[idx].axis('off')
-
-    plt.tight_layout()
-    plt.show()
 

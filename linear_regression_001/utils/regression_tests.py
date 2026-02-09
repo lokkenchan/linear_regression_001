@@ -22,7 +22,8 @@ L.I.N.N.E. Acronym:
 
 - Equal Variance of Errors (spread of residuals is consistent across predictions),
 
-- Outliers and Influence
+Extra
+- Outliers and Influence. Cook's Distance > 1 is a significant problem. >0.5 is worth investigating.
 """
 
 def plot_linearity_checks(df, features, target, figsize=(15,10)):

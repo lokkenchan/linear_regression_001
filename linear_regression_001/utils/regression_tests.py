@@ -163,4 +163,8 @@ def independence_of_errors(resids, axis=0):
         'durbin_watson': result
     }
 
+def normality_of_errors(resid):
+    """Plot out the probplot of residuals"""
+    return stats.probplot(resid, dist='norm', plot=plt)
+
 

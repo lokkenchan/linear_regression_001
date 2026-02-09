@@ -146,4 +146,21 @@ def plot_feature_correlations(df, features, figsize=(10,5)):
     plt.show()
 
 
+def independence_of_errors(resids, axis=0):
+    """
+    Ho: DW=2, errors are not autocorrelated
+    Ha: DW!=2, errors are autocorrelated
+    Rule of thumb 1.5 to 2.5 are accepted as not autocorrelated
+    """
+
+    result = durbin_watson(resids,axis)
+    if result < 1.5 or result > 2.5:
+        result = f"{result:.2f} => Errors are autocorrelated!"
+    else:
+        result = f"{result:.2f} => Errors are not autocorrelated."
+
+    return {
+        'durbin_watson': result
+    }
+
 

@@ -1,2 +1,2 @@
 from .paths import PROJECT_ROOT,DATA_DIR,RAW,INTERIM,EXTERNAL,PROCESSED,INFERENCE,PREDICTIONS,MODELS
-from .regression_tests import calculate_vif, plot_feature_correlations, plot_linearity_checks, independence_of_errors, normality_of_errors
+from .regression_tests import calculate_vif, plot_feature_correlations, plot_linearity_checks, independence_of_errors, normality_of_errors, equal_var_of_errors

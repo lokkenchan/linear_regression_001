@@ -1,6 +1,6 @@
 from linear_regression_001.data.loader import normalize_column_names,load_raw_data,load_clean_data,load_processed_data
 from linear_regression_001.data.preprocess import missing_summary, drop_high_missing_rows, preprocess
 from linear_regression_001.utils.paths import PROJECT_ROOT,DATA_DIR,RAW,INTERIM,EXTERNAL,PROCESSED,INFERENCE,PREDICTIONS,MODELS
-from linear_regression_001.utils.regression_tests import calculate_vif, plot_feature_correlations, plot_linearity_checks, independence_of_errors, normality_of_errors
+from linear_regression_001.utils.regression_tests import calculate_vif, plot_feature_correlations, plot_linearity_checks, independence_of_errors, normality_of_errors, equal_var_of_errors
 from linear_regression_001.features.build_features import split_features_target,build_features,build_preprocessor,FEATURE_LIST
 from linear_regression_001.models import train_models,predict_features,evaluate_model

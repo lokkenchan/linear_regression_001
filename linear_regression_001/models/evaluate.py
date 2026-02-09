@@ -16,7 +16,7 @@ from sklearn.metrics import (
 from linear_regression_001.data.loader import load_raw_data, load_clean_data, load_processed_data
 from linear_regression_001.features.build_features import split_features_target, build_features, FEATURE_LIST
 from linear_regression_001.utils.paths import INTERIM, MODELS, PREDICTIONS
-from linear_regression_001.utils.regression_tests import independence_of_errors,normality_of_errors
+from linear_regression_001.utils.regression_tests import independence_of_errors,normality_of_errors,equal_var_of_errors
 
 def evaluate_model(model_path, test_data_path, baseline_path=None):
     # Load model and test data to build features
@@ -27,6 +27,8 @@ def evaluate_model(model_path, test_data_path, baseline_path=None):
 
     # Generate predictions
     y_pred = model.predict(X_test_features)
+    # Calculate residuals
+    resid = y_test-y_pred
 
     # Initialize results dictionary
     results = {}
@@ -44,10 +46,15 @@ def evaluate_model(model_path, test_data_path, baseline_path=None):
     results['residual_analysis'] = analyze_residuals(y_test,y_pred)
 
     # Independence of Errors
-    results['durbin_watson'] = independence_of_errors(y_test-y_pred)
+    results['durbin_watson'] = independence_of_errors(resid)
 
     # Normality of errors
-    normality_of_errors(y_test-y_pred)
+    normality_of_errors(resid)
+
+    # Equal variance of errors
+    equal_var_of_errors(y_test,y_pred)
+
+    plt.show()
 
     return results
 

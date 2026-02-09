@@ -165,6 +165,17 @@ def independence_of_errors(resids, axis=0):
 
 def normality_of_errors(resid):
     """Plot out the probplot of residuals"""
-    return stats.probplot(resid, dist='norm', plot=plt)
+    plt.figure()
+    stats.probplot(resid, dist='norm', plot=plt)
+    plt.show()
+
+def equal_var_of_errors(y_true,y_pred):
+    """Plot scatter of residuals across predicted values"""
+    plt.figure()
+    sns.scatterplot(x=y_pred, y=y_true-y_pred)
+    plt.title("Residual vs Prediction of Charges")
+    plt.ylabel("Residual")
+    plt.xlabel("Prediction")
+    plt.show()
 
 

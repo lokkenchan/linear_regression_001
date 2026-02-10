@@ -10,6 +10,8 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor, OLSI
 from statsmodels.stats.diagnostic import het_breuschpagan
 from statsmodels.stats.stattools import durbin_watson
 from statsmodels.regression.linear_model import OLS
+# linear_regression_001
+from linear_regression_001.features.build_features import build_preprocessor
 """
 L.I.N.N.E. Acronym:
 ===================
@@ -178,5 +180,18 @@ def equal_var_of_errors(y_true,y_pred):
     plt.ylabel("Residual")
     plt.xlabel("Prediction")
     plt.show()
+
+
+def cooks_distance(OLS_model):
+    """
+    Return the dataframe of cook's distance given the model.
+
+    :param OLS_model: Fitted OLS model with all X features and constant and y.
+    """
+    print(f"Are there any points worth investigating (>0.5)? {(OLS_model.get_influence().summary_frame()['cooks_d'].sort_values(ascending = False)>=0.5).any()}")
+    influence_df = OLS_model.get_influence().summary_frame()['cooks_d'].sort_values(ascending = False)
+    print(influence_df.to_string())
+    return influence_df
+
 
 
